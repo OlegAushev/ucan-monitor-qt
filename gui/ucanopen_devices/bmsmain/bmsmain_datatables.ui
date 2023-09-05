@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+	<requires lib="gtk" version="4.0" />
+	<template class="BmsMainDataTables" parent="AdwBin">
+		<child>
+			<object class="GtkBox">
+				<property name="margin-start">10</property>
+				<property name="margin-end">10</property>
+				<property name="margin-top">10</property>
+				<property name="margin-bottom">10</property>
+				<property name="orientation">horizontal</property>
+				<property name="spacing">10</property>
+
+				<child>
+
+					<!-- BMS Main -->
+					<object class="AdwPreferencesGroup" id="group_tpdo1">
+						<property name="width-request">240</property>
+						<property name="title">System</property>
+						<property name="hexpand">false</property>
+
+						<child>
+							<object class="UcanopenHeartbeatIndicator" id="heartbeat_indicator">
+								<property name="title">Network State</property>
+								<property name="subtitle"></property>
+								<property name="value-chars">8</property>
+							</object>
+						</child>
+
+						<child>
+							<object class="CheckEntry" id="tpdo1_indicator">
+								<property name="title">Connection</property>
+								<property name="subtitle"></property>
+							</object>
+						</child>
+
+						<child>
+							<object class="BasicEntry" id="entry_current">
+								<property name="title">Current</property>
+								<property name="subtitle">A</property>
+								<property name="value-chars">8</property>
+							</object>
+						</child>
+						<child>
+							<object class="BasicEntry" id="entry_temp_min">
+								<property name="title">Min Temperature</property>
+								<property name="subtitle">°C</property>
+								<property name="value-chars">8</property>
+							</object>
+						</child>
+						<child>
+							<object class="BasicEntry" id="entry_temp_max">
+								<property name="title">Max Temperature</property>
+								<property name="subtitle">°C</property>
+								<property name="value-chars">8</property>
+							</object>
+						</child>
+						<child>
+							<object class="BasicEntry" id="entry_charge">
+								<property name="title">Charge</property>
+								<property name="subtitle">%</property>
+								<property name="value-chars">8</property>
+							</object>
+						</child>
+						<child>
+							<object class="BasicEntry" id="entry_voltage">
+								<property name="title">Voltage</property>
+								<property name="subtitle">V</property>
+								<property name="value-chars">8</property>
+							</object>
+						</child>
+					</object>
+				</child>
+			</object>
+		</child>
+	</template>
+</interface>

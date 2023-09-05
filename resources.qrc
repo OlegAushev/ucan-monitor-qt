@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qtquickcontrols2.conf</file>
+
+        <file>gui/main.qml</file>
+        <file>gui/ucanopen/serverselector_window.qml</file>
+
+        <file>icons/ucan-monitor.png</file>
+    </qresource>
+</RCC>

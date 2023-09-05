@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+	<requires lib="gtk" version="4.0" />
+	<template class="BasicEntry" parent="AdwActionRow">
+		<child type="suffix">
+			<object class="GtkEntry" id="_entry">
+				<property name="hexpand">false</property>
+				<property name="halign">end</property>
+				<property name="valign">center</property>
+				<property name="editable">false</property>
+				<property name="can_focus">false</property>
+				<property name="xalign">0.5</property>
+				<style>
+					<class name="monospace"/>
+				</style>
+			</object>
+		</child>
+	</template>
+</interface>
