@@ -1,7 +1,7 @@
 #
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.16)
 
-project(ucan-monitor VERSION 0.2)
+project(ucan-monitor VERSION 0.3)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/git-info)
 include(GitInfo)
@@ -15,22 +15,25 @@ find_package(Threads REQUIRED)
 
 ################################################################################
 # Qt
-find_package(Qt5 COMPONENTS Core Quick Charts REQUIRED)
-find_package(Qt5QuickCompiler REQUIRED)
-if (${Qt5_FOUND})
-    message(STATUS "Found Qt " ${Qt5_VERSION})
-else()
-    message(FATAL_ERROR "Couldn't find Qt")
-endif()
+find_package(Qt6 COMPONENTS Widgets Quick Gui QuickControls2 REQUIRED)
 
-set(CMAKE_AUTOMOC ON)
-# set(CMAKE_AUTORCC ON)
+qt_standard_project_setup()
 
-cmake_policy(SET CMP0071 NEW)
 
-################################################################################
-# Boost
-find_package(Boost 1.56 REQUIRED COMPONENTS system filesystem iostreams)
+
+# find_package(Qt5 COMPONENTS Core Quick Charts REQUIRED)
+# find_package(Qt5QuickCompiler REQUIRED)
+
+# if (${Qt5_FOUND})
+#     message(STATUS "Found Qt " ${Qt5_VERSION})
+# else()
+#     message(FATAL_ERROR "Couldn't find Qt")
+# endif()
+
+# set(CMAKE_AUTOMOC ON)
+# # set(CMAKE_AUTORCC ON)
+
+# cmake_policy(SET CMP0071 NEW)
 
 ################################################################################
 # Set default build type
@@ -55,16 +58,26 @@ file(GLOB_RECURSE app_sources CONFIGURE_DEPENDS
     ${PROJECT_SOURCE_DIR}/src/*.cpp
 )
 
-qtquick_compiler_add_resources(app_resources ./resources.qrc)
+# qtquick_compiler_add_resources(app_resources ./resources.qrc)
 
 ################################################################################
 # Executable
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(executable ${CMAKE_PROJECT_NAME})
 
-add_executable(${executable}
+qt_add_executable(${executable}
     ${app_sources}
-    ${app_resources}
+    #${app_resources}
+)
+
+qt_add_qml_module(${executable}
+    URI ${CMAKE_PROJECT_NAME}
+    QML_FILES
+        main.qml
+        serverselector_window.qml
+    #     FramedImage.qml
+    # RESOURCES
+    #     img/world.png
 )
 
 target_compile_definitions(${executable} PRIVATE
@@ -76,20 +89,15 @@ target_include_directories(${executable} PRIVATE
     ${app_incdirs}
 )
 
-target_link_libraries(${executable}
+target_link_libraries(${executable} PRIVATE
     Threads::Threads
-    Qt5::Quick
-    Qt5::Charts
-)
-
-target_link_libraries(${executable}
+    Qt6::Widgets
+    Qt6::Gui
+    Qt6::Quick
+    Qt::QuickControls2
+    # Qt5::Quick
+    # Qt5::Charts
     git-info
-)
-
-target_link_libraries(${executable}
-    Boost::system
-    Boost::filesystem
-    Boost::iostreams
 )
 
 ################################################################################

@@ -1,7 +1,8 @@
-#include <QtWidgets/QApplication>
-#include <QtQml/QQmlApplicationEngine>
-#include <QtQml/QQmlContext>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QIcon>
+#include <QQuickStyle>
 
 #include <ucanopen/client/client.h>
 #include <ucanopen_devices/serverselector/serverselector.h>
@@ -14,7 +15,8 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setApplicationName("ucan-monitor");
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-	QApplication app(argc, argv);
+	QGuiApplication app(argc, argv);
+    QQuickStyle::setStyle("Fusion");
     app.setWindowIcon(QIcon(":/icons/ucan-monitor.png"));
 
     auto can_socket = std::make_shared<can::Socket>();
@@ -26,13 +28,24 @@ int main(int argc, char *argv[]) {
     ucanopen::ServerSelector server_selector({"SRM-Drive-80", srmdrive_server}, {"LaunchPad", launchpad_server});
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("server_selector", &server_selector);
-    engine.load(QUrl(QStringLiteral("qrc:///gui/ucanopen/serverselector_window.qml")));
-    if (engine.rootObjects().isEmpty()) {
-        return -1;
-    }
 
-	return app.exec();
+    engine.rootContext()->setContextProperty("server_selector", &server_selector);
+
+    const QUrl url("../serverselector_window.qml");
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
+                     &app, []() { QCoreApplication::exit(-1); },
+                     Qt::QueuedConnection);
+    engine.load(url);
+
+    return app.exec();
+
+    // engine.rootContext()->setContextProperty("server_selector", &server_selector);
+    // engine.load(QUrl(QStringLiteral("qrc:///serverselector_window.qml")));
+    // if (engine.rootObjects().isEmpty()) {
+    //     return -1;
+    // }
+
+	// return app.exec();
 }
 
 
